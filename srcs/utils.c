@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:04:13 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/06 22:32:08 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:02:33 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,39 @@ int	close_window(t_vars *vars)
 {
 	ft_free_vars(vars);
 	exit (0);
+}
+
+char	*get_texture(t_vars *vars, char *name)
+{
+	char	*path;
+
+	if (vars->tile_size == 8)
+		path = ft_strjoin("./textures8/", name);
+	else if (vars->tile_size == 16)
+		path = ft_strjoin("./textures16/", name);
+	else if (vars->tile_size == 32)
+		path = ft_strjoin("./textures32/", name);
+	else if (vars->tile_size == 48)
+		path = ft_strjoin("./textures48/", name);
+	else if (vars->tile_size == 64)
+		path = ft_strjoin("./textures64/", name);
+	if (!path)
+		return (NULL);
+	return (path);
+}
+
+void	init_tile_size(t_vars *vars)
+{
+	if (size_of_map(*vars->map) < 6 || vars->map[0]->line_length < 16)
+		vars->tile_size = 64;
+	else if (size_of_map(*vars->map) < 12 || vars->map[0]->line_length < 24)
+		vars->tile_size = 48;
+	else if (size_of_map(*vars->map) < 18 || vars->map[0]->line_length < 32)
+		vars->tile_size = 32;
+	else if (size_of_map(*vars->map) < 26 || vars->map[0]->line_length < 48)
+		vars->tile_size = 16;
+	else if (size_of_map(*vars->map) < 32 || vars->map[0]->line_length < 64)
+		vars->tile_size = 8;
+	else
+		vars->tile_size = 8;
 }

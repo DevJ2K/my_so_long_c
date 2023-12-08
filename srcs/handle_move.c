@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 22:29:19 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/07 11:05:01 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 14:02:17 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ static void	handle_exit(t_vars *vars, char touch, int x, int y)
 	char	*path;
 
 	if (touch == 'w')
-		path = ft_strdup("./textures/exit1.xpm");
+		path = get_texture(vars, "exit1.xpm");
 	if (touch == 'a')
-		path = ft_strdup("./textures/exit2.xpm");
+		path = get_texture(vars, "exit2.xpm");
 	if (touch == 'd')
-		path = ft_strdup("./textures/exit4.xpm");
+		path = get_texture(vars, "exit4.xpm");
 	if (touch == 's')
-		path = ft_strdup("./textures/exit3.xpm");
+		path = get_texture(vars, "exit3.xpm");
+	if (!path)
+		return ;
 	img = mlx_xpm_file_to_image(vars->mlx, path, &img_width, &img_height);
 	free(path);
 	if (!img)

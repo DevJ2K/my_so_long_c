@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 13:19:09 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/07 10:57:56 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:00:03 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ void	display_image(t_vars *vars, char c_texture, int x, int y);
 void	generate_map(t_vars *vars);
 void	display_player(t_vars *vars, char touch, int x, int y);
 void	display_count(t_vars *vars);
+char	*get_texture(t_vars *vars, char *name);
+void	init_tile_size(t_vars *vars);
 
 #endif

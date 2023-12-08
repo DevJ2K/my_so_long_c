@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 14:26:49 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 11:16:16 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:03:44 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ static void	init_vars(t_vars *vars, t_map **map)
 		ft_free_map(map);
 		ft_error("Failed to initialize minilibx.", 1);
 	}
-	vars->tile_size = 48;
+	vars->map = map;
+	init_tile_size(vars);
 	w_width = (*map)->line_length * vars->tile_size;
 	w_height = size_of_map(*map) * vars->tile_size;
 	vars->win = mlx_new_window(vars->mlx, w_width, w_height, "CRACKLANDERS");
-	vars->map = map;
 	vars->game = init_game();
 	vars->matrix = get_tab_format_map(*map);
 	if (!vars->matrix || !vars->game)
