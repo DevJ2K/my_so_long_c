@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 14:26:49 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/07 11:20:05 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 09:48:31 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,5 @@ int	main(int argc, char **argv)
 			ft_error("Not valid path found.", 1);
 	}
 	init_vars(&vars, &map);
-	ft_printf("Count : %d\n", vars.game->count_moves);
 	so_long(&vars);
 }

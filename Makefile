@@ -44,11 +44,7 @@ $(NAME):	$(OBJS)
 				@make -C $(FT_PRINTF)
 				@make -C $(LIBFT)
 				@make -C $(MINILIBX)
-				@mv ft_printf/libftprintf.a .
-				@mv libft/libft.a .
-				@mv $(MINILIBX)/libmlx_Linux.a .
-				@echo "$(BLUE)Moving libft.a, libftprintf.a and libmlx_Linux.a to ./$(DEF_COLOR)"
-				@$(CC) $(OBJS) libftprintf.a libft.a libmlx_Linux.a -lXext -lX11 -o $(NAME)
+				@$(CC) $(OBJS) ft_printf/libftprintf.a libft/libft.a $(MINILIBX)/libmlx_Linux.a -lXext -lX11 -o $(NAME)
 				@echo "$(GREEN)So_long successfully compiled !$(DEF_COLOR)"
 
 clean:
@@ -60,9 +56,9 @@ clean:
 
 fclean: 	clean
 				@$(RM) $(NAME)
-				@$(RM) libftprintf.a
-				@$(RM) libft.a
-				@$(RM) libmlx_Linux.a
+				@$(RM) ft_printf/libftprintf.a
+				@$(RM) libft/libft.a
+				@$(RM) $(MINILIBX)/libmlx_Linux.a
 				@echo "$(RED)Deletion of $(NAME)$(DEF_COLOR)"
 
 re:			fclean all
