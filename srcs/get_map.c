@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:02:52 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/04 17:37:21 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 11:40:30 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,33 @@ t_map	*get_map(char *filepath)
 	}
 	lstadd_back(&maps, NULL);
 	return (maps);
+}
+
+
+char	**get_tab_format_map(t_map *map)
+{
+	char	**tab;
+	int		i;
+	int		j;
+
+	tab = malloc((size_of_map(map) + 1) * sizeof(char *));
+	if (!tab)
+		return (NULL);
+	i = 0;
+	while (map)
+	{
+		j = 0;
+		tab[i] = malloc((map->line_length + 1) * sizeof(char));
+		if (!tab[i])
+			return (ft_free_tab(tab));
+		while (j < map->line_length)
+		{
+			tab[i][j] = ft_toupper(map->line[j]);
+			j++;
+		}
+		tab[i++][j] = '\0';
+		map = map->next;
+	}
+	tab[i] = NULL;
+	return (tab);
 }

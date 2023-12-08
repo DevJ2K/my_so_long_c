@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:55:35 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 10:01:20 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 11:44:15 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,6 @@
 #include "libft.h"
 #include "ft_printf.h"
 #include "get_next_line.h"
-
-char	**get_tab_format_map(t_map *map)
-{
-	char	**tab;
-	int		i;
-	int		j;
-
-	tab = malloc((size_of_map(map) + 1) * sizeof(char *));
-	if (!tab)
-		return (NULL);
-	i = 0;
-	while (map)
-	{
-		j = 0;
-		tab[i] = malloc((map->line_length + 1) * sizeof(char));
-		if (!tab[i])
-			return (ft_free_tab(tab));
-		while (j < map->line_length)
-		{
-			tab[i][j] = ft_toupper(map->line[j]);
-			j++;
-		}
-		tab[i++][j] = '\0';
-		map = map->next;
-	}
-	tab[i] = NULL;
-	return (tab);
-}
 
 static int	find_path_exit(char **matrix, int i, int j, char from)
 {
@@ -93,28 +65,47 @@ static int	find_path_player(char **matrix, int i, int j, char from)
 	return (find);
 }
 
-static int	navigate_throw_tab(char **tab)
+static int	handle_collectibles(t_map *map, int i, int j)
+{
+	int		valid_path;
+	char	**tmp_map;
+
+	tmp_map = get_tab_format_map(map);
+	if (!tmp_map)
+		return (-1);
+	valid_path = find_path_player(tmp_map, i, j, 0);
+	ft_free_tab(tmp_map);
+	if (valid_path == 0)
+		return (0);
+	if (valid_path == -1)
+		return (-1);
+	return (valid_path);
+}
+
+static int	navigate_throw_tab(t_map *map, char **tab)
 {
 	int	i;
 	int	j;
 	int	nb_path;
+	int	path_coins;
 
-	i = 0;
-	while (tab[i])
+	i = -1;
+	while (tab[++i])
 	{
-		j = 0;
-		while (tab[i][j])
+		j = -1;
+		while (tab[i][++j])
 		{
 			if (tab[i][j] == 'P')
 				nb_path = find_path_exit(tab, i, j, 0);
 			if (tab[i][j] == 'C')
 			{
-				if (find_path_player(tab, i, j, 0) == 0)
+				path_coins = handle_collectibles(map, i, j);
+				if (path_coins == 0)
 					return (0);
+				if (path_coins == -1)
+					return (-1);
 			}
-			j++;
 		}
-		i++;
 	}
 	return (nb_path);
 }
@@ -127,7 +118,7 @@ int	exist_valid_path(t_map *map)
 	tab = get_tab_format_map(map);
 	if (!tab)
 		return (-1);
-	nb_path = navigate_throw_tab(tab);
+	nb_path = navigate_throw_tab(map, tab);
 	ft_free_tab(tab);
 	return (nb_path);
 }
