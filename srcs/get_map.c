@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 15:02:52 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 11:40:30 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 15:07:43 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_map	*get_map(char *filepath)
 	lstadd_back(&maps, NULL);
 	return (maps);
 }
-
 
 char	**get_tab_format_map(t_map *map)
 {

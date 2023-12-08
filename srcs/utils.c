@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:04:13 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 15:02:33 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:27:17 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,14 @@ char	*get_texture(t_vars *vars, char *name)
 
 void	init_tile_size(t_vars *vars)
 {
-	if (size_of_map(*vars->map) < 6 || vars->map[0]->line_length < 16)
+	if (size_of_map(*vars->map) <= 16 && vars->map[0]->line_length < 30)
 		vars->tile_size = 64;
-	else if (size_of_map(*vars->map) < 12 || vars->map[0]->line_length < 24)
+	else if (size_of_map(*vars->map) <= 20 && vars->map[0]->line_length < 40)
 		vars->tile_size = 48;
-	else if (size_of_map(*vars->map) < 18 || vars->map[0]->line_length < 32)
+	else if (size_of_map(*vars->map) <= 31 && vars->map[0]->line_length < 60)
 		vars->tile_size = 32;
-	else if (size_of_map(*vars->map) < 26 || vars->map[0]->line_length < 48)
+	else if (size_of_map(*vars->map) <= 62 && vars->map[0]->line_length < 121)
 		vars->tile_size = 16;
-	else if (size_of_map(*vars->map) < 32 || vars->map[0]->line_length < 64)
-		vars->tile_size = 8;
 	else
 		vars->tile_size = 8;
 }

@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 10:56:59 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 14:34:52 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:32:41 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	display_player(t_vars *vars, char touch, int x, int y)
 		ft_putendl_fd("Error\nFailed to allocate memory.", 2);
 		close_window(vars);
 	}
-
 	img = mlx_xpm_file_to_image(vars->mlx, path, &img_width, &img_height);
 	free(path);
 	if (!img)
@@ -84,6 +83,9 @@ void	display_count(t_vars *vars)
 	if (!count)
 		close_window(vars);
 	display_image(vars, '1', 0, 0);
-	mlx_string_put(vars->mlx, vars->win, 22, 24, 0xFF0000, count);
+	if (vars->tile_size >= 32)
+		mlx_string_put(vars->mlx, vars->win, 22, 24, 0xFF0000, count);
+	else
+		mlx_string_put(vars->mlx, vars->win, 1, 12, 0xFF0000, count);
 	free(count);
 }
