@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:55:35 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/06 22:19:05 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/08 10:01:20 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	**get_tab_format_map(t_map *map)
 	return (tab);
 }
 
-static int	find_path(char **matrix, int i, int j, char from)
+static int	find_path_exit(char **matrix, int i, int j, char from)
 {
 	int	find;
 
@@ -58,26 +58,47 @@ static int	find_path(char **matrix, int i, int j, char from)
 	if (matrix[i - 1][j] == 'E')
 		return (1);
 	if (ft_strchr("0C", matrix[i][j + 1]) && from != 'R')
-		find += find_path(matrix, i, j + 1, 'L');
+		find += find_path_exit(matrix, i, j + 1, 'L');
 	if (ft_strchr("0C", matrix[i][j - 1]) && from != 'L')
-		find += find_path(matrix, i, j - 1, 'R');
+		find += find_path_exit(matrix, i, j - 1, 'R');
 	if (ft_strchr("0C", matrix[i + 1][j]) && from != 'B')
-		find += find_path(matrix, i + 1, j, 'T');
+		find += find_path_exit(matrix, i + 1, j, 'T');
 	if (ft_strchr("0C", matrix[i - 1][j]) && from != 'T')
-		find += find_path(matrix, i - 1, j, 'B');
+		find += find_path_exit(matrix, i - 1, j, 'B');
 	return (find);
 }
 
-int	exist_valid_path(t_map *map)
+static int	find_path_player(char **matrix, int i, int j, char from)
 {
-	char	**tab;
-	int		i;
-	int		j;
-	int		nb_path;
+	int	find;
 
-	tab = get_tab_format_map(map);
-	if (!tab)
-		return (-1);
+	find = 0;
+	matrix[i][j] = '*';
+	if (matrix[i][j + 1] == 'P')
+		return (1);
+	if (matrix[i][j - 1] == 'P')
+		return (1);
+	if (matrix[i + 1][j] == 'P')
+		return (1);
+	if (matrix[i - 1][j] == 'P')
+		return (1);
+	if (ft_strchr("0C", matrix[i][j + 1]) && from != 'R')
+		find += find_path_player(matrix, i, j + 1, 'L');
+	if (ft_strchr("0C", matrix[i][j - 1]) && from != 'L')
+		find += find_path_player(matrix, i, j - 1, 'R');
+	if (ft_strchr("0C", matrix[i + 1][j]) && from != 'B')
+		find += find_path_player(matrix, i + 1, j, 'T');
+	if (ft_strchr("0C", matrix[i - 1][j]) && from != 'T')
+		find += find_path_player(matrix, i - 1, j, 'B');
+	return (find);
+}
+
+static int	navigate_throw_tab(char **tab)
+{
+	int	i;
+	int	j;
+	int	nb_path;
+
 	i = 0;
 	while (tab[i])
 	{
@@ -85,11 +106,28 @@ int	exist_valid_path(t_map *map)
 		while (tab[i][j])
 		{
 			if (tab[i][j] == 'P')
-				nb_path = find_path(tab, i, j, 0);
+				nb_path = find_path_exit(tab, i, j, 0);
+			if (tab[i][j] == 'C')
+			{
+				if (find_path_player(tab, i, j, 0) == 0)
+					return (0);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (nb_path);
+}
+
+int	exist_valid_path(t_map *map)
+{
+	char	**tab;
+	int		nb_path;
+
+	tab = get_tab_format_map(map);
+	if (!tab)
+		return (-1);
+	nb_path = navigate_throw_tab(tab);
 	ft_free_tab(tab);
 	return (nb_path);
 }
