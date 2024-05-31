@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 14:26:49 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 15:03:44 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/10 23:21:04 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static t_game	*init_game(void)
 		return (NULL);
 	game->coins_left = 0;
 	game->count_moves = 0;
+	game->pushup = 0;
+	game->fits = 'p';
 	return (game);
 }
 

@@ -6,12 +6,13 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:04:13 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 16:27:17 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/10 22:33:49 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 #include "libft.h"
+#include "ft_printf.h"
 #include "mlx.h"
 
 int	ft_linelength(char *line)
@@ -63,4 +64,12 @@ void	init_tile_size(t_vars *vars)
 		vars->tile_size = 16;
 	else
 		vars->tile_size = 8;
+}
+
+int	print_c(char *str, char *color)
+{
+	int	return_value;
+
+	return_value = ft_printf("%s%s%s", color, str, RESET);
+	return (return_value);
 }

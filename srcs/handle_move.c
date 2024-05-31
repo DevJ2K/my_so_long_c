@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 22:29:19 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 14:02:17 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/10 23:37:27 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	handle_exit(t_vars *vars, char touch, int x, int y)
 	if (vars->game->coins_left > 1)
 		ft_printf("Ramène-moi encore %d sacs !\n", vars->game->coins_left);
 	else if (vars->game->coins_left == 1)
-		ft_printf("Ramène-moi plus qu'un sac et tu es libre !\n");
+		print_c("Ramène-moi plus qu'un sac et tu es libre !\n", ORANGE);
 }
 
 static void	valid_move(t_vars *vars, int new_x, int new_y)
@@ -64,25 +64,35 @@ static void	valid_move(t_vars *vars, int new_x, int new_y)
 	vars->game->pos_y = new_y;
 }
 
-static void	move_characters(t_vars *vars, char touch, int new_x, int new_y)
+static void	handle_opps(t_vars *vars, int new_x, int new_y)
+{
+	if (vars->game->pushup >= 3)
+	{
+		print_c("Vous avez éliminé un policier !\n", RED);
+		vars->game->fits = 'f';
+		valid_move(vars, new_x, new_y);
+	}
+	else
+	{
+		print_c("Un soucis ? Retour dans ta cellule immediatement !!\n", RED);
+		close_window(vars);
+	}
+}
+
+void	move_characters(t_vars *vars, char touch, int new_x, int new_y)
 {
 	int	x;
 	int	y;
-	int	tls;
 
-	tls = vars->tile_size;
-	x = new_x / tls;
-	y = new_y / tls;
+	x = new_x / vars->tile_size;
+	y = new_y / vars->tile_size;
 	if (vars->matrix[y][x] == 'N')
-	{
-		ft_printf("T'as un soucis ? Retour dans ta cellule immediatement !!\n");
-		close_window(vars);
-	}
+		handle_opps(vars, new_x, new_y);
 	if (vars->matrix[y][x] == '0' || vars->matrix[y][x] == 'C')
 		valid_move(vars, new_x, new_y);
 	else if (vars->matrix[y][x] == 'E' && vars->game->coins_left <= 0)
 	{
-		ft_printf("Bravo, vous avez réussi à vous échapper de CPRH-22 !\n");
+		print_c("Vous avez réussi à vous échapper de CPRH-22 !\n", GREEN);
 		close_window(vars);
 	}
 	else if (vars->matrix[y][x] == 'E')
@@ -90,20 +100,28 @@ static void	move_characters(t_vars *vars, char touch, int new_x, int new_y)
 	display_player(vars, touch, vars->game->pos_x, vars->game->pos_y);
 }
 
-int	key_press(int key, t_vars *vars)
+void	handle_pushup(t_vars *vars)
 {
-	int	tls;
+	int		display;
+	char	*path1;
+	char	*path2;
 
-	tls = vars->tile_size;
-	if (key == XK_Escape || key == XK_q)
+	path1 = get_texture(vars, "p_push1.xpm");
+	if (!path1)
 		close_window(vars);
-	if (key == XK_w || key == XK_Up)
-		move_characters(vars, 'w', vars->game->pos_x, vars->game->pos_y - tls);
-	if (key == XK_a || key == XK_Left)
-		move_characters(vars, 'a', vars->game->pos_x - tls, vars->game->pos_y);
-	if (key == XK_d || key == XK_Right)
-		move_characters(vars, 'd', vars->game->pos_x + tls, vars->game->pos_y);
-	if (key == XK_s || key == XK_Down)
-		move_characters(vars, 's', vars->game->pos_x, vars->game->pos_y + tls);
-	return (0);
+	path2 = get_texture(vars, "p_push2.xpm");
+	if (!path2)
+	{
+		free(path1);
+		close_window(vars);
+	}
+	display = handle_display_pushup(vars, vars->game, path1, path2);
+	free(path1);
+	free(path2);
+	if (display == -1)
+		close_window(vars);
+	vars->game->pushup++;
+	ft_printf("Push-up count : %s%d%s\n", PURPLE, vars->game->pushup, RESET);
+	if (vars->game->pushup == 3)
+		print_c("Vous avez la capacité de KO les policiers !\n", BLUE);
 }

@@ -6,7 +6,7 @@
 /*   By: tajavon <tajavon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 13:18:12 by tajavon           #+#    #+#             */
-/*   Updated: 2023/12/08 12:03:54 by tajavon          ###   ########.fr       */
+/*   Updated: 2023/12/10 23:27:15 by tajavon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,26 @@ void	generate_map(t_vars *vars)
 		y += vars->tile_size;
 		map = map->next;
 	}
+}
+
+int	key_press(int key, t_vars *vars)
+{
+	int	tls;
+
+	tls = vars->tile_size;
+	if (key == XK_Escape || key == XK_q)
+		close_window(vars);
+	if (key == XK_p || key == XK_space)
+		handle_pushup(vars);
+	if (key == XK_w || key == XK_Up)
+		move_characters(vars, 'w', vars->game->pos_x, vars->game->pos_y - tls);
+	if (key == XK_a || key == XK_Left)
+		move_characters(vars, 'a', vars->game->pos_x - tls, vars->game->pos_y);
+	if (key == XK_d || key == XK_Right)
+		move_characters(vars, 'd', vars->game->pos_x + tls, vars->game->pos_y);
+	if (key == XK_s || key == XK_Down)
+		move_characters(vars, 's', vars->game->pos_x, vars->game->pos_y + tls);
+	return (0);
 }
 
 void	so_long(t_vars *vars)
